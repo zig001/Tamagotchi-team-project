@@ -1,0 +1,39 @@
+{% extends 'base_tamagotchi.html' %}
+{% load static %}
+{% block title %}Создать тамагочи{% endblock %}
+
+{% block content %}
+<form method="POST" novalidate>
+		<p class="pixel-background" style="margin-bottom: 30px;">{{ pagename }}</p>
+		{% csrf_token %}
+		{{form.name}}
+	<input type="submit" value="Создать"/>
+</form>
+<div id="tamagotchiType" class="tamagotchiCharacter">
+    <div id="tamagochiHat">
+    </div>
+</div>
+
+<script>
+	roomBackground.style.backgroundImage = `url('/static/img/wardrobe.png')`
+
+	hatsImg = {
+		{% for item in images.hat %}{{ item.id }}:"{{ item.image.url }}",
+		{% endfor %}
+	}
+	typeImg = {
+		{% for item in images.type %}{{ item.id }}:"{{ item.image.url }}",
+		{% endfor %}
+	}
+
+	function setTamagotchiBg(type, id){
+		if (type == 'hat'){
+			tamagochiHat.style.backgroundImage = `url('${hatsImg[id]}')`
+		} else if (type == 'type') {
+			tamagotchiType.style.backgroundImage = `url('${typeImg[id]}')`
+		}
+	}
+	setTamagotchiBg('hat', 1)
+	setTamagotchiBg('type', 1)
+</script>
+{% endblock %}

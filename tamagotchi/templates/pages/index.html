@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<img src="{% static 'img/logo.png' %}" class="logo">
+{% if request.user.is_authenticated %}
+<h2>С возвращением, {{ request.user.username }}!</h2>
+<br>
+<a class="pixel-background" href="{% url 'profile' %}">Перейти в профиль</a>
+{% else %}
+<a class="pixel-background" href="{% url 'login' %}">Начать играть</a>
+{% endif %}
+{% endblock %}
+
