@@ -1,0 +1,48 @@
+{% extends 'base_tamagotchi.html' %}
+{% load static %}
+{% block title %}Изменение персонажа{% endblock %}
+
+{% block content %}
+<p class="pixel-background" style="margin: 15px auto;">{{ pagename }}</p>
+<div class="customize">
+    {% for item in images.hat %}
+    <button onclick="setTamagotchiBg('hat', {{ item.id }})"><img src="{{ item.image.url }}" width="100" height="150"></button>{% endfor %}
+</div>
+<div class="customize">
+    {% for item in images.type %}
+    <button onclick="setTamagotchiBg('type', {{ item.id }})"><img src="{{ item.image.url }}" width="100" height="150"></button>{% endfor %}
+</div>
+<a id="change" class="pixel-background" style="margin: 15px auto;">Применить</a>
+
+<div id="tamagotchiType" class="tamagotchiCharacter">
+    <div id="tamagochiHat">
+    </div>
+</div>
+
+<script>
+	roomBackground.style.backgroundImage = `url('/static/img/wardrobe.png')`
+	let hatsImg = {
+		{% for item in images.hat %}{{ item.id }}:"{{ item.image.url }}",
+		{% endfor %}
+	}
+	let typeImg = {
+		{% for item in images.type %}{{ item.id }}:"{{ item.image.url }}",
+		{% endfor %}
+	}
+	let nowHatId = 0
+	let nowTypeId = 0
+
+	function setTamagotchiBg(type, id){
+		if (type == 'hat'){
+			tamagochiHat.style.backgroundImage = `url('${hatsImg[id]}')`
+			nowHatId = id
+		} else if (type == 'type') {
+			tamagotchiType.style.backgroundImage = `url('${typeImg[id]}')`
+			nowTypeId = id
+		}
+		change.href = `/api/tamagotchi_look_change?hat_id=${nowHatId}&look_id=${nowTypeId}`
+	}
+	setTamagotchiBg('hat', {{ view.hat.id }})
+	setTamagotchiBg('type', {{ view.tamagotchi_type.id }})
+</script>
+{% endblock %}
